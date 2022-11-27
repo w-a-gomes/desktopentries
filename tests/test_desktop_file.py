@@ -3,7 +3,7 @@
 # python3 -m unittest
 # python3 -m unittest tests.test_local_conf_dir
 #
-# coverage run -m unittest discover && coverage report -m
+# coverage run -m unittest discover && coverage report -m && coverage html
 import unittest
 
 import src.desktopentries as deskentry

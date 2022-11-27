@@ -16,7 +16,10 @@ class DesktopFilesLocation(object):
     menus to find applications
     """
     def __init__(self) -> None:
-        """Class constructor"""
+        """Class constructor
+
+        Initialize class properties.
+        """
         self.__desktop_files_dirs = self.__find_desktop_files()
         self.__desktop_files_ulrs = None
 
@@ -104,6 +107,8 @@ class DesktopFile(object):
     def __init__(self, desktop_file_url: str) -> None:
         """Class constructor
 
+        Initialize class properties.
+
         :param desktop_file_url:
             String from a desktop file like: "/path/file.desktop"
         """
@@ -112,14 +117,37 @@ class DesktopFile(object):
 
     @property
     def desktop_file_as_dict(self) -> dict:
-        """..."""
+        """Contents of a desktop file as a dictionary
+
+        Example:
+        >>> d = DesktopFile('/usr/share/applications/firefox.desktop')
+        >>> d.desktop_file_as_dict['[Desktop Entry]']['Name']
+        'Firefox Web Browser'
+        >>> d.desktop_file_as_dict['[Desktop Entry]']['Type']
+        'Application'
+        >>> for i in d.desktop_file_as_dict.keys():
+        ...     print(i)
+        ...
+        [Desktop Entry]
+        [Desktop Action new-window]
+        [Desktop Action new-private-window]
+        >>>
+        >>> d.desktop_file_as_dict['[Desktop Action new-window]']['Name']
+        'Open a New Window'
+        >>>
+        """
         if not self.__desktop_file_as_dict:
             self.__set_desktop_file_as_dict()
         return self.__desktop_file_as_dict
 
     @property
     def desktop_file_url(self) -> str:
-        """..."""
+        """URL of the desktop file
+
+        The URL used to construct this object, like: "/path/file.desktop".
+
+        :return: String from a desktop file
+        """
         return self.__desktop_file_url
 
     def __set_desktop_file_as_dict(self) -> None:
