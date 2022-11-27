@@ -23,6 +23,12 @@ class TestDesktopFile(unittest.TestCase):
         self.assertIsNotNone(deskfile.desktop_file_url)
         self.assertIsNotNone(deskfile.desktop_file_as_dict)
 
+    def test_desktop_file_dict(self) -> None:
+        for i in self.all_desktop_file:
+            self.assertIn('[Desktop Entry]', i.desktop_file_as_dict)
+            self.assertIn('Name', i.desktop_file_as_dict['[Desktop Entry]'])
+            self.assertIn('applications', i.desktop_file_url)
+
 
 if __name__ == '__main__':
     # No third-party testing coverage
