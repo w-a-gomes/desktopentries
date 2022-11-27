@@ -17,20 +17,28 @@ class DesktopFilesLocation(object):
     """
     def __init__(self) -> None:
         """Class constructor"""
-        self.__desktop_file_dirs = self.__find_desktop_files()
-        self.__desktop_files_ulr = None
+        self.__desktop_files_dirs = self.__find_desktop_files()
+        self.__desktop_files_ulrs = None
 
     @property
-    def desktop_file_dirs(self) -> list:
-        """..."""
-        return self.__desktop_file_dirs
+    def desktop_files_dirs(self) -> list:
+        """All desktop files path
+
+        String list of all desktop file paths on the system.
+        """
+        return self.__desktop_files_dirs
 
     @property
-    def desktop_files_ulr(self) -> list:
-        """..."""
-        if not self.__desktop_files_ulr:
-            self.__desktop_files_ulr = self.__desktop_files_url_by_priority()
-        return self.__desktop_files_ulr
+    def desktop_files_ulrs(self) -> list:
+        """All desktop files ulrs (/path/file.desktop)
+
+        String list of all desktop file URLs in order of priority.
+        If there are files with the same name, then user files in "~/.local/",
+        will have priority over system files.
+        """
+        if not self.__desktop_files_ulrs:
+            self.__desktop_files_ulrs = self.__desktop_files_url_by_priority()
+        return self.__desktop_files_ulrs
 
     @staticmethod
     def __find_desktop_files() -> list:
@@ -54,18 +62,17 @@ class DesktopFilesLocation(object):
                 files_dir = os.path.join(data_dir, 'applications')
 
                 if files_dir not in desktop_file_dirs:
-                    desktop_file_dirs.append(files_dir)
+                    desktop_file_dirs.append(files_dir)  # pragma: no cover
 
         return desktop_file_dirs
 
     def __desktop_files_url_by_priority(self) -> list:
         # get url in order of precedence
-
         preferred_user_path = os.path.join(
             os.environ['HOME'], '.local/share/applications')
 
         preferred_user_files = []
-        if preferred_user_path in self.__desktop_file_dirs:
+        if preferred_user_path in self.__desktop_files_dirs:
             preferred_user_files = [
                 x for x in os.listdir(preferred_user_path)
                 if '~' not in x and x.endswith('.desktop')]
@@ -73,7 +80,7 @@ class DesktopFilesLocation(object):
         desktop_files = [
             os.path.join(preferred_user_path, x) for x in preferred_user_files]
 
-        for desktop_dir in self.__desktop_file_dirs:
+        for desktop_dir in self.__desktop_files_dirs:
 
             if desktop_dir != preferred_user_path:
                 for desktop_file in os.listdir(desktop_dir):
@@ -95,7 +102,11 @@ class DesktopFile(object):
     into a dictionary to provide easy access to their values.
     """
     def __init__(self, desktop_file_url: str) -> None:
-        """Class constructor"""
+        """Class constructor
+
+        :param desktop_file_url:
+            String from a desktop file like: "/path/file.desktop"
+        """
         self.__desktop_file_url = os.path.abspath(desktop_file_url)
         self.__desktop_file_as_dict = None
 
@@ -112,38 +123,28 @@ class DesktopFile(object):
         return self.__desktop_file_url
 
     def __set_desktop_file_as_dict(self) -> None:
-        # ...
+        # Open file
         with open(self.__desktop_file_url, 'r') as desktop_file:
             desktop_file_line = desktop_file.read()
 
+        # Separate scope: "[header]key=value...", "[h]k=v...",
         desktop_scope = [
-            x + y
-            for x, y in zip(
+            x + y for x, y in zip(
                 re.findall('\[[A-Z]', desktop_file_line),
                 re.split('\[[A-Z]', desktop_file_line)[1:])]
 
+        # Create dict
         self.__desktop_file_as_dict = {}
         for scope in desktop_scope:
-            escope_title = ''
-            escope_keys_and_values = {}
+            escope_header = ''           # [Desktop Entry]
+            escope_keys_and_values = {}  # Key=Value
 
             for index_num, scopeline in enumerate(scope.split('\n')):
                 if index_num == 0:
-                    escope_title = scopeline
+                    escope_header = scopeline
                 else:
                     if scopeline and scopeline[0] != '#' and '=' in scopeline:
                         line_key, line_value = scopeline.split('=', 1)
                         escope_keys_and_values[line_key] = line_value
 
-            self.__desktop_file_as_dict[escope_title] = escope_keys_and_values
-
-
-if __name__ == '__main__':
-    desk_url = DesktopFilesLocation()
-    all_desktop_file = [DesktopFile(x) for x in desk_url.desktop_files_ulr]
-    for i in all_desktop_file:
-        if 'Name' in i.desktop_file_as_dict['[Desktop Entry]']:
-            print(i.desktop_file_as_dict['[Desktop Entry]']['Name'])
-            print(i.desktop_file_url)
-            print('---')
-    print(len(all_desktop_file))
+            self.__desktop_file_as_dict[escope_header] = escope_keys_and_values
