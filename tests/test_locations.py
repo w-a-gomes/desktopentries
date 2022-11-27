@@ -17,14 +17,14 @@ class TestLocation(unittest.TestCase):
     def test_local_conf_dir(self) -> None:
         local_conf_dir = os.path.join(
             os.environ['HOME'], '.local/share/applications')
-        self.assertIn(local_conf_dir, self.desk_locate.desktop_files_dirs)
+        self.assertIn(local_conf_dir, self.desk_locate.desktop_file_dirs)
 
     def test_root_conf_dir(self) -> None:
         root_conf_dir = '/usr/share/applications'
-        self.assertIn(root_conf_dir, self.desk_locate.desktop_files_dirs)
+        self.assertIn(root_conf_dir, self.desk_locate.desktop_file_dirs)
 
     def test_if_dirs_is_not_none(self) -> None:
-        self.assertIsNotNone(self.desk_locate.desktop_files_dirs)
+        self.assertIsNotNone(self.desk_locate.desktop_file_dirs)
 
 
 if __name__ == '__main__':

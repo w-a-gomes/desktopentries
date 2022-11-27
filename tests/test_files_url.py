@@ -16,7 +16,7 @@ class TestFilesURL(unittest.TestCase):
         self.desk_locate = deskentry.DesktopFilesLocation()
 
     def test_if_files_is_not_none(self) -> None:
-        self.assertIsNotNone(self.desk_locate.desktop_files_ulrs)
+        self.assertIsNotNone(self.desk_locate.desktop_file_ulrs)
 
 
 if __name__ == '__main__':

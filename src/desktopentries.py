@@ -20,28 +20,28 @@ class DesktopFilesLocation(object):
 
         Initialize class properties.
         """
-        self.__desktop_files_dirs = self.__find_desktop_files()
-        self.__desktop_files_ulrs = None
+        self.__desktop_file_dirs = self.__find_desktop_files()
+        self.__desktop_file_ulrs = None
 
     @property
-    def desktop_files_dirs(self) -> list:
+    def desktop_file_dirs(self) -> list:
         """All desktop files path
 
         String list of all desktop file paths on the system.
         """
-        return self.__desktop_files_dirs
+        return self.__desktop_file_dirs
 
     @property
-    def desktop_files_ulrs(self) -> list:
+    def desktop_file_ulrs(self) -> list:
         """All desktop files ulrs (/path/file.desktop)
 
         String list of all desktop file URLs in order of priority.
         If there are files with the same name, then user files in "~/.local/",
         will have priority over system files.
         """
-        if not self.__desktop_files_ulrs:
-            self.__desktop_files_ulrs = self.__desktop_files_url_by_priority()
-        return self.__desktop_files_ulrs
+        if not self.__desktop_file_ulrs:
+            self.__desktop_file_ulrs = self.__desktop_files_url_by_priority()
+        return self.__desktop_file_ulrs
 
     @staticmethod
     def __find_desktop_files() -> list:
@@ -75,7 +75,7 @@ class DesktopFilesLocation(object):
             os.environ['HOME'], '.local/share/applications')
 
         preferred_user_files = []
-        if preferred_user_path in self.__desktop_files_dirs:
+        if preferred_user_path in self.__desktop_file_dirs:
             preferred_user_files = [
                 x for x in os.listdir(preferred_user_path)
                 if '~' not in x and x.endswith('.desktop')]
@@ -83,7 +83,7 @@ class DesktopFilesLocation(object):
         desktop_files = [
             os.path.join(preferred_user_path, x) for x in preferred_user_files]
 
-        for desktop_dir in self.__desktop_files_dirs:
+        for desktop_dir in self.__desktop_file_dirs:
 
             if desktop_dir != preferred_user_path:
                 for desktop_file in os.listdir(desktop_dir):
