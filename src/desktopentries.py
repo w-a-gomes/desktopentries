@@ -34,7 +34,7 @@ class DesktopFilesLocation(object):
 
     @property
     def desktop_file_ulrs_by_priority(self) -> list:
-        """All desktop files ulrs (/path/file.desktop)
+        """Desktop files ulrs (/path/file.desktop)
 
         String list of all desktop file URLs in order of priority.
         If there are files with the same name, then user files in "~/.local/",
@@ -49,9 +49,7 @@ class DesktopFilesLocation(object):
     def all_desktop_file_ulrs(self) -> list:
         """All desktop files ulrs (/path/file.desktop)
 
-        String list of all desktop file URLs in order of priority.
-        If there are files with the same name, then user files in "~/.local/",
-        will have priority over system files.
+        String list of all desktop file URLs.
         """
         if not self.__all_desktop_file_ulrs:
             self.__all_desktop_file_ulrs = (

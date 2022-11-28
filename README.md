@@ -8,9 +8,9 @@ No dependencies, just use the standard library.
 Use `help()` for details.
 ```
 DesktopFilesLocation():
-    desktop_files_dirs
-    desktop_file_ulrs_by_priority
     all_desktop_file_ulrs
+    desktop_file_ulrs_by_priority
+    desktop_file_dirs
 ```
 ```
 DesktopFile(desktop_file_url: str):        
@@ -23,7 +23,7 @@ Locate desktop file folders, and get the URL addresses of those files
 ```python
 
 >>> local = DesktopFilesLocation()
->>> local.desktop_files_dirs
+>>> local.desktop_file_dirs
 ['/home/user/.local/share/applications',
  '/usr/local/share/applications',
  '/usr/share/applications',
