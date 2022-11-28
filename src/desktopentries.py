@@ -20,8 +20,9 @@ class DesktopFilesLocation(object):
 
         Initialize class properties.
         """
-        self.__desktop_file_dirs = self.__find_desktop_files()
-        self.__desktop_file_ulrs = None
+        self.__desktop_file_dirs = self.__find_desktop_file_dirs()
+        self.__desktop_file_ulrs_by_priority = None
+        self.__all_desktop_file_ulrs = None
 
     @property
     def desktop_file_dirs(self) -> list:
@@ -32,19 +33,33 @@ class DesktopFilesLocation(object):
         return self.__desktop_file_dirs
 
     @property
-    def desktop_file_ulrs(self) -> list:
+    def desktop_file_ulrs_by_priority(self) -> list:
         """All desktop files ulrs (/path/file.desktop)
 
         String list of all desktop file URLs in order of priority.
         If there are files with the same name, then user files in "~/.local/",
         will have priority over system files.
         """
-        if not self.__desktop_file_ulrs:
-            self.__desktop_file_ulrs = self.__desktop_files_url_by_priority()
-        return self.__desktop_file_ulrs
+        if not self.__desktop_file_ulrs_by_priority:
+            self.__desktop_file_ulrs_by_priority = (
+                self.__find_desktop_files_url_by_priority())
+        return self.__desktop_file_ulrs_by_priority
+
+    @property
+    def all_desktop_file_ulrs(self) -> list:
+        """All desktop files ulrs (/path/file.desktop)
+
+        String list of all desktop file URLs in order of priority.
+        If there are files with the same name, then user files in "~/.local/",
+        will have priority over system files.
+        """
+        if not self.__all_desktop_file_ulrs:
+            self.__all_desktop_file_ulrs = (
+                self.__find_all_desktop_files_urls())
+        return self.__all_desktop_file_ulrs
 
     @staticmethod
-    def __find_desktop_files() -> list:
+    def __find_desktop_file_dirs() -> list:
         # Fix: XDG_DATA_DIRS not contains "$HOME/.local/share/applications"
 
         # XDG_DATA_DIRS not contains "$HOME/.local/share/applications".
@@ -69,30 +84,33 @@ class DesktopFilesLocation(object):
 
         return desktop_file_dirs
 
-    def __desktop_files_url_by_priority(self) -> list:
-        # get url in order of precedence
-        preferred_user_path = os.path.join(
-            os.environ['HOME'], '.local/share/applications')
+    def __find_desktop_files_url_by_priority(self) -> list:
+        # Get url in order of precedence
 
-        preferred_user_files = []
-        if preferred_user_path in self.__desktop_file_dirs:
-            preferred_user_files = [
-                x for x in os.listdir(preferred_user_path)
-                if '~' not in x and x.endswith('.desktop')]
-
-        desktop_files = [
-            os.path.join(preferred_user_path, x) for x in preferred_user_files]
-
+        checked_file_names = []
+        desktop_files = []
         for desktop_dir in self.__desktop_file_dirs:
+            for desktop_file in os.listdir(desktop_dir):
 
-            if desktop_dir != preferred_user_path:
-                for desktop_file in os.listdir(desktop_dir):
+                if desktop_file not in checked_file_names:
+                    checked_file_names.append(desktop_file)
 
-                    if desktop_file not in preferred_user_files:
-                        if ('~' not in desktop_file
-                                and desktop_file.endswith('.desktop')):
-                            desktop_files.append(
-                                os.path.join(desktop_dir, desktop_file))
+                    if ('~' not in desktop_file
+                            and desktop_file.endswith('.desktop')):
+                        desktop_files.append(
+                            os.path.join(desktop_dir, desktop_file))
+
+        return desktop_files
+
+    def __find_all_desktop_files_urls(self) -> list:
+        # Get all url
+        desktop_files = []
+        for desktop_dir in self.__desktop_file_dirs:
+            for desktop_file in os.listdir(desktop_dir):
+                if ('~' not in desktop_file
+                        and desktop_file.endswith('.desktop')):
+                    desktop_files.append(
+                        os.path.join(desktop_dir, desktop_file))
 
         return desktop_files
 

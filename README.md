@@ -9,7 +9,8 @@ Use `help()` for details.
 ```
 DesktopFilesLocation():
     desktop_files_dirs
-    desktop_files_ulrs
+    desktop_file_ulrs_by_priority
+    all_desktop_file_ulrs
 ```
 ```
 DesktopFile(desktop_file_url: str):        
@@ -18,10 +19,11 @@ DesktopFile(desktop_file_url: str):
 ```
 ### Usage:
 Locate desktop file folders, and get the URL addresses of those files
+
 ```python
 
 >>> local = DesktopFilesLocation()
->>> local.desktop_file_dirs
+>>> local.desktop_files_dirs
 ['/home/user/.local/share/applications',
  '/usr/local/share/applications',
  '/usr/share/applications',
@@ -29,7 +31,7 @@ Locate desktop file folders, and get the URL addresses of those files
  '/var/lib/flatpak/exports/share/applications',
  '/var/lib/snapd/desktop/applications']
 >>>
->>> local.desktop_file_ulrs
+>>> local.desktop_file_ulrs_by_priority
 ['/home/user/.local/share/applications/jetbrains-pycharm-ce.desktop',
  '/usr/local/share/applications/vim.desktop',
  '/usr/share/applications/org.inkscape.Inkscape.desktop',
