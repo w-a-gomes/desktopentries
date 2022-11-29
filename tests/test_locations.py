@@ -12,7 +12,7 @@ import src.desktopentries as deskentry
 class TestLocation(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.desk_locate = deskentry.DesktopFilesLocation()
+        self.desk_locate = deskentry.DesktopFileLocations()
 
     def test_local_conf_dir(self) -> None:
         local_conf_dir = os.path.join(

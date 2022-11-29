@@ -12,7 +12,7 @@ import src.desktopentries as deskentry
 class TestDesktopFile(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.desk_locate = deskentry.DesktopFilesLocation()
+        self.desk_locate = deskentry.DesktopFileLocations()
         self.all_desktop_file = [
             deskentry.DesktopFile(x) for x in
             self.desk_locate.desktop_file_ulrs_by_priority]

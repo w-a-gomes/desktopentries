@@ -14,7 +14,7 @@ import src.desktopentries as deskentry
 class TestFilesURL(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.desk_locate = deskentry.DesktopFilesLocation()
+        self.desk_locate = deskentry.DesktopFileLocations()
 
     def test_if_files_is_not_none(self) -> None:
         self.assertIsNotNone(self.desk_locate.desktop_file_ulrs_by_priority)

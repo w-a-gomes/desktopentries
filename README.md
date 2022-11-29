@@ -7,13 +7,13 @@ No dependencies, just use the standard library.
 ### Definition
 Use `help()` for details.
 ```
-DesktopFilesLocation():
+DesktopFileLocations():
     all_desktop_file_ulrs
     desktop_file_ulrs_by_priority
     desktop_file_dirs
 ```
 ```
-DesktopFile(desktop_file_url: str):        
+DesktopFile(desktop_file_url):        
     desktop_file_as_dict
     desktop_file_url
 ```
@@ -22,7 +22,7 @@ Locate desktop file folders, and get the URL addresses of those files
 
 ```python
 
->>> local = DesktopFilesLocation()
+>>> local = DesktopFileLocations()
 >>> local.desktop_file_dirs
 ['/home/user/.local/share/applications',
  '/usr/local/share/applications',
