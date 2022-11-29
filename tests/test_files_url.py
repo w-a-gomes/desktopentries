@@ -6,6 +6,7 @@
 # coverage run -m unittest discover && coverage report -m
 import os
 import unittest
+import subprocess
 
 import src.desktopentries as deskentry
 
@@ -32,6 +33,20 @@ class TestFilesURL(unittest.TestCase):
 
         for i in self.desk_locate.all_desktop_file_ulrs:
             self.assertTrue(i.endswith('.desktop'))
+
+    def test_if_all_desktop_file_ulrs_exists(self) -> None:
+        if subprocess.getoutput('which vim') == '/usr/bin/vim':
+            vim_count = [
+                x for x in self.desk_locate.all_desktop_file_ulrs
+                if 'vim.desktop' in x]
+            self.assertEqual(len(vim_count), 2)
+
+    def test_desktop_file_ulrs_priority(self) -> None:
+        if subprocess.getoutput('which vim') == '/usr/bin/vim':
+            vim_count = [
+                x for x in self.desk_locate.desktop_file_ulrs_by_priority
+                if 'vim.desktop' in x]
+            self.assertEqual(len(vim_count), 1)
 
 
 if __name__ == '__main__':
