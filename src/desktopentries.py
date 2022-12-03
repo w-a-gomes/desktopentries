@@ -58,27 +58,22 @@ class DesktopFileLocations(object):
 
     @staticmethod
     def __find_desktop_file_dirs() -> list:
-        # Fix: XDG_DATA_DIRS not contains "$HOME/.local/share/applications"
+        xdg_data_home = getoutput('echo $XDG_DATA_HOME')
+        xdg_data_home = (
+            os.path.join(xdg_data_home, 'applications') if xdg_data_home else
+            os.path.join(os.environ['HOME'], '.local/share/applications'))
 
-        # XDG_DATA_DIRS not contains "$HOME/.local/share/applications".
-        # Keep the default directories and check if there are more directories
-        desktop_file_dirs = [
-            os.path.join(os.environ['HOME'], '.local/share/applications'),
-            '/usr/local/share/applications',
-            '/usr/share/applications',
-            os.path.join(
-                os.environ['HOME'],
-                '.local/share/flatpak/exports/share/applications'),
-            '/var/lib/flatpak/exports/share/applications',
-            '/var/lib/snapd/desktop/applications']
+        desktop_file_dirs = [xdg_data_home]
 
-        for data_dir in getoutput('echo $XDG_DATA_DIRS').split(':'):
-            if 'applications' in os.listdir(data_dir):
-
-                files_dir = os.path.join(data_dir, 'applications')
-
-                if files_dir not in desktop_file_dirs:
-                    desktop_file_dirs.append(files_dir)  # pragma: no cover
+        xdg_data_dirs = getoutput('echo $XDG_DATA_DIRS')
+        if xdg_data_dirs:
+            for data_dir in xdg_data_dirs.split(':'):
+                if 'applications' in os.listdir(data_dir):
+                    desktop_file_dirs.append(
+                        os.path.join(data_dir, 'applications'))
+        else:
+            desktop_file_dirs += [
+                '/usr/local/share/applications', '/usr/share/applications']
 
         return desktop_file_dirs
 
