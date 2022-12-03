@@ -13,7 +13,10 @@ class DesktopFileLocations(object):
 
     Locate system desktop entry file paths.
     Files that contain the '.desktop' extension and are used internally by
-    menus to find applications
+    menus to find applications.
+
+    Follows the specification from freedesktop.org:
+        www.freedesktop.org/wiki/Specifications/basedir-spec/
     """
     def __init__(self) -> None:
         """Class constructor
@@ -28,7 +31,8 @@ class DesktopFileLocations(object):
     def desktop_file_dirs(self) -> list:
         """All desktop files path
 
-        String list of all desktop file paths on the system.
+        String list of all desktop file paths on the system as per settings
+        in $XDG_DATA_HOME and $XDG_DATA_DIRS of the freedesktop.org spec.
         """
         return self.__desktop_file_dirs
 
@@ -38,7 +42,8 @@ class DesktopFileLocations(object):
 
         String list of all desktop file URLs in order of priority.
         If there are files with the same name, then user files in "~/.local/",
-        will have priority over system files.
+        will have priority over system files. Likewise, files in
+        "/usr/local/share" take precedence over files in "/usr/share".
         """
         if not self.__desktop_file_ulrs_by_priority:
             self.__desktop_file_ulrs_by_priority = (
@@ -49,7 +54,9 @@ class DesktopFileLocations(object):
     def all_desktop_file_ulrs(self) -> list:
         """All desktop files ulrs (/path/file.desktop)
 
-        String list of all desktop file URLs.
+        String list of all desktop file URLs. It may contain files with the
+        same name in different paths. To get valid single files, use
+        "desktop_file_ulrs_by_priority" property.
         """
         if not self.__all_desktop_file_ulrs:
             self.__all_desktop_file_ulrs = (
