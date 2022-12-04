@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://github.com/w-a-gomes/desktopentryparse/reference/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Class Reference - desktopentryparse</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Class Reference";
+        var mkdocs_page_input_path = "reference.md";
+        var mkdocs_page_url = "/w-a-gomes/desktopentryparse/reference/";
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> desktopentryparse
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Class Reference</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#filelocations">FileLocations</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#ulrs">ulrs</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ulrs_by_priority">ulrs_by_priority</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#file_dirs">file_dirs</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#desktopfile">DesktopFile</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#as_dict">as_dict</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#url">url</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../tests/">Tests</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../about/">About</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">desktopentryparse</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>Class Reference</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="class-reference">Class Reference</h1>
+<p>Definitions overview</p>
+<pre><code>desktopentryparse.FileLocations()
+    ulrs: list
+    ulrs_by_priority: list
+    file_dirs: list
+
+desktopentryparse.DesktopFile(url: str)
+    as_dict: dict
+    url: str
+</code></pre>
+<h2 id="filelocations">FileLocations</h2>
+<p>Locate system desktop entry file paths.
+Files that contain the '.desktop' extension and are used internally by
+menus to find applications.</p>
+<p>Follows the specification from freedesktop.org: www.freedesktop.org/wiki/Specifications/basedir-spec/</p>
+<pre><code class="language-python">&gt;&gt;&gt; local = FileLocations()
+</code></pre>
+<h3 id="ulrs">ulrs</h3>
+<p>All desktop files ulrs (/path/file.desktop)</p>
+<p>String list of all desktop file URLs. It may contain files with the
+same name in different paths. To get valid single files, use
+"ulrs_by_priority" property.</p>
+<pre><code class="language-python">&gt;&gt;&gt; local = desktopentryparse.FileLocations()
+&gt;&gt;&gt; local.ulrs
+['/home/user/.local/share/applications/jetbrains-pycharm-ce.desktop',
+ '/usr/local/share/applications/vim.desktop',
+ '/usr/share/applications/org.inkscape.Inkscape.desktop',
+ '/usr/share/applications/vlc.desktop',
+ ...
+ ]
+</code></pre>
+<h3 id="ulrs_by_priority">ulrs_by_priority</h3>
+<p>Desktop files ulrs (/path/file.desktop)</p>
+<p>String list of all desktop file URLs in order of priority.
+If there are files with the same name, then user files in "~/.local/",
+will have priority over system files. Likewise, files in
+"/usr/local/share" take precedence over files in "/usr/share".</p>
+<pre><code class="language-python">&gt;&gt;&gt; local = FileLocations()
+&gt;&gt;&gt; local.ulrs_by_priority
+['/home/user/.local/share/applications/jetbrains-pycharm-ce.desktop',
+ '/usr/local/share/applications/vim.desktop',
+ '/usr/share/applications/org.inkscape.Inkscape.desktop',
+ '/usr/share/applications/vlc.desktop',
+ '/usr/share/applications/python3.10.desktop',
+ '/home/user/.local/share/flatpak/exports/share/applications/org.gimp.GIMP.desktop',
+ '/var/lib/flatpak/exports/share/applications/com.obsproject.Studio.desktop',
+ '/var/lib/snapd/desktop/applications/ohmygiraffe_ohmygiraffe.desktop',
+ ...
+ ]
+</code></pre>
+<h3 id="file_dirs">file_dirs</h3>
+<p>All desktop files path</p>
+<p>String list of all desktop file paths on the system as per settings
+in $XDG_DATA_HOME and $XDG_DATA_DIRS of the freedesktop.org spec.</p>
+<pre><code class="language-python">&gt;&gt;&gt; local = FileLocations()
+&gt;&gt;&gt; local.file_dirs
+['/home/user/.local/share/applications',
+ '/usr/local/share/applications',
+ '/usr/share/applications',
+ '/home/user/.local/share/flatpak/exports/share/applications',
+ '/var/lib/flatpak/exports/share/applications',
+ '/var/lib/snapd/desktop/applications']
+</code></pre>
+<h2 id="desktopfile">DesktopFile</h2>
+<p>Desktop files are files with the extension '.desktop' and are used
+internally by menus to find applications. This object converts these files
+into a dictionary to provide easy access to their values.</p>
+<pre><code class="language-python">desktop_file = DesktopFile(url='/usr/share/applications/firefox.desktop')
+</code></pre>
+<h3 id="as_dict">as_dict</h3>
+<p>Contents of a desktop file as a dictionary.</p>
+<pre><code class="language-python">&gt;&gt;&gt; desktop_file = DesktopFile(url='/usr/share/applications/firefox.desktop')
+&gt;&gt;&gt; desktop_file.as_dict['[Desktop Entry]']['Name']
+'Firefox Web Browser'
+&gt;&gt;&gt; desktop_file.as_dict['[Desktop Entry]']['Type']
+'Application'
+&gt;&gt;&gt; for key in desktop_file.as_dict.keys():
+...     print(key)
+...
+[Desktop Entry]
+[Desktop Action new-window]
+[Desktop Action new-private-window]
+&gt;&gt;&gt;
+&gt;&gt;&gt; desktop_file.as_dict['[Desktop Action new-window]']['Name']
+'Open a New Window'
+</code></pre>
+<h3 id="url">url</h3>
+<p>The URL used to construct this object, like: "/path/file.desktop".</p>
+<pre><code class="language-python">&gt;&gt;&gt; desktop_file = DesktopFile(url='/usr/share/applications/firefox.desktop')
+&gt;&gt;&gt; desktop_file.url
+'/usr/share/applications/firefox.desktop'
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../tests/" class="btn btn-neutral float-right" title="Tests">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../tests/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
