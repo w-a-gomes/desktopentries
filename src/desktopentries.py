@@ -8,7 +8,7 @@ import re
 from subprocess import getoutput
 
 
-class DesktopFileLocations(object):
+class FileLocations(object):
     """Desktop files location object.
 
     Locate system desktop entry file paths.
@@ -23,21 +23,21 @@ class DesktopFileLocations(object):
 
         Initialize class properties.
         """
-        self.__desktop_file_dirs = self.__find_desktop_file_dirs()
-        self.__desktop_file_ulrs_by_priority = None
-        self.__all_desktop_file_ulrs = None
+        self.__file_dirs = self.__find_dirs()
+        self.__ulrs_by_priority = None
+        self.__ulrs = None
 
     @property
-    def desktop_file_dirs(self) -> list:
+    def file_dirs(self) -> list:
         """All desktop files path
 
         String list of all desktop file paths on the system as per settings
         in $XDG_DATA_HOME and $XDG_DATA_DIRS of the freedesktop.org spec.
         """
-        return self.__desktop_file_dirs
+        return self.__file_dirs
 
     @property
-    def desktop_file_ulrs_by_priority(self) -> list:
+    def ulrs_by_priority(self) -> list:
         """Desktop files ulrs (/path/file.desktop)
 
         String list of all desktop file URLs in order of priority.
@@ -45,26 +45,26 @@ class DesktopFileLocations(object):
         will have priority over system files. Likewise, files in
         "/usr/local/share" take precedence over files in "/usr/share".
         """
-        if not self.__desktop_file_ulrs_by_priority:
-            self.__desktop_file_ulrs_by_priority = (
-                self.__find_desktop_files_url_by_priority())
-        return self.__desktop_file_ulrs_by_priority
+        if not self.__ulrs_by_priority:
+            self.__ulrs_by_priority = (
+                self.__find_urls_by_priority())
+        return self.__ulrs_by_priority
 
     @property
-    def all_desktop_file_ulrs(self) -> list:
+    def ulrs(self) -> list:
         """All desktop files ulrs (/path/file.desktop)
 
         String list of all desktop file URLs. It may contain files with the
         same name in different paths. To get valid single files, use
-        "desktop_file_ulrs_by_priority" property.
+        "ulrs_by_priority" property.
         """
-        if not self.__all_desktop_file_ulrs:
-            self.__all_desktop_file_ulrs = (
-                self.__find_all_desktop_files_urls())
-        return self.__all_desktop_file_ulrs
+        if not self.__ulrs:
+            self.__ulrs = (
+                self.__find_urls())
+        return self.__ulrs
 
     @staticmethod
-    def __find_desktop_file_dirs() -> list:
+    def __find_dirs() -> list:
         xdg_data_home = getoutput('echo $XDG_DATA_HOME')
         xdg_data_home = (
             os.path.join(xdg_data_home, 'applications') if xdg_data_home else
@@ -84,12 +84,12 @@ class DesktopFileLocations(object):
 
         return desktop_file_dirs
 
-    def __find_desktop_files_url_by_priority(self) -> list:
+    def __find_urls_by_priority(self) -> list:
         # Get url in order of precedence
 
         checked_file_names = []
         desktop_files = []
-        for desktop_dir in self.__desktop_file_dirs:
+        for desktop_dir in self.__file_dirs:
             for desktop_file in os.listdir(desktop_dir):
 
                 if desktop_file not in checked_file_names:
@@ -102,10 +102,10 @@ class DesktopFileLocations(object):
 
         return desktop_files
 
-    def __find_all_desktop_files_urls(self) -> list:
+    def __find_urls(self) -> list:
         # Get all url
         desktop_files = []
-        for desktop_dir in self.__desktop_file_dirs:
+        for desktop_dir in self.__file_dirs:
             for desktop_file in os.listdir(desktop_dir):
                 if ('~' not in desktop_file
                         and desktop_file.endswith('.desktop')):
@@ -122,55 +122,55 @@ class DesktopFile(object):
     internally by menus to find applications. This object converts these files
     into a dictionary to provide easy access to their values.
     """
-    def __init__(self, desktop_file_url: str) -> None:
+    def __init__(self, url: str) -> None:
         """Class constructor
 
         Initialize class properties.
 
-        :param desktop_file_url:
+        :param url:
             String from a desktop file like: "/path/file.desktop"
         """
-        self.__desktop_file_url = os.path.abspath(desktop_file_url)
-        self.__desktop_file_as_dict = None
+        self.__url = os.path.abspath(url)
+        self.__as_dict = None
 
     @property
-    def desktop_file_as_dict(self) -> dict:
+    def as_dict(self) -> dict:
         """Contents of a desktop file as a dictionary
 
         Example:
-        >>> d = DesktopFile('/usr/share/applications/firefox.desktop')
-        >>> d.desktop_file_as_dict['[Desktop Entry]']['Name']
+        >>> d = DesktopFile(url='/usr/share/applications/firefox.desktop')
+        >>> d.as_dict['[Desktop Entry]']['Name']
         'Firefox Web Browser'
-        >>> d.desktop_file_as_dict['[Desktop Entry]']['Type']
+        >>> d.as_dict['[Desktop Entry]']['Type']
         'Application'
-        >>> for i in d.desktop_file_as_dict.keys():
+        >>> for i in d.as_dict.keys():
         ...     print(i)
         ...
         [Desktop Entry]
         [Desktop Action new-window]
         [Desktop Action new-private-window]
         >>>
-        >>> d.desktop_file_as_dict['[Desktop Action new-window]']['Name']
+        >>> d.as_dict['[Desktop Action new-window]']['Name']
         'Open a New Window'
         >>>
         """
-        if not self.__desktop_file_as_dict:
-            self.__set_desktop_file_as_dict()
-        return self.__desktop_file_as_dict
+        if not self.__as_dict:
+            self.__parse_file_to_dict()
+        return self.__as_dict
 
     @property
-    def desktop_file_url(self) -> str:
+    def url(self) -> str:
         """URL of the desktop file
 
         The URL used to construct this object, like: "/path/file.desktop".
 
         :return: String from a desktop file
         """
-        return self.__desktop_file_url
+        return self.__url
 
-    def __set_desktop_file_as_dict(self) -> None:
+    def __parse_file_to_dict(self) -> None:
         # Open file
-        with open(self.__desktop_file_url, 'r') as desktop_file:
+        with open(self.__url, 'r') as desktop_file:
             desktop_file_line = desktop_file.read()
 
         # Separate scope: "[header]key=value...", "[h]k=v...",
@@ -180,7 +180,7 @@ class DesktopFile(object):
                 re.split('\[[A-Z]', desktop_file_line)[1:])]
 
         # Create dict
-        self.__desktop_file_as_dict = {}
+        self.__as_dict = {}
         for scope in desktop_scope:
             escope_header = ''           # [Desktop Entry]
             escope_keys_and_values = {}  # Key=Value
@@ -193,4 +193,4 @@ class DesktopFile(object):
                         line_key, line_value = scopeline.split('=', 1)
                         escope_keys_and_values[line_key] = line_value
 
-            self.__desktop_file_as_dict[escope_header] = escope_keys_and_values
+            self.__as_dict[escope_header] = escope_keys_and_values

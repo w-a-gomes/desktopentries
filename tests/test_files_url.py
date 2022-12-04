@@ -14,37 +14,37 @@ import src.desktopentries as deskentry
 class TestFilesURL(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.desk_locate = deskentry.DesktopFileLocations()
+        self.desk_locate = deskentry.FileLocations()
 
     def test_if_files_is_not_none(self) -> None:
-        self.assertIsNotNone(self.desk_locate.desktop_file_ulrs_by_priority)
-        self.assertIsNotNone(self.desk_locate.all_desktop_file_ulrs)
+        self.assertIsNotNone(self.desk_locate.ulrs_by_priority)
+        self.assertIsNotNone(self.desk_locate.ulrs)
 
     def test_if_all_file_exists(self) -> None:
-        for i in self.desk_locate.desktop_file_ulrs_by_priority:
+        for i in self.desk_locate.ulrs_by_priority:
             self.assertTrue(os.path.isfile(i))
 
-        for i in self.desk_locate.all_desktop_file_ulrs:
+        for i in self.desk_locate.ulrs:
             self.assertTrue(os.path.isfile(i))
 
     def test_all_file_extensions(self) -> None:
-        for i in self.desk_locate.desktop_file_ulrs_by_priority:
+        for i in self.desk_locate.ulrs_by_priority:
             self.assertTrue(i.endswith('.desktop'))
 
-        for i in self.desk_locate.all_desktop_file_ulrs:
+        for i in self.desk_locate.ulrs:
             self.assertTrue(i.endswith('.desktop'))
 
     def test_if_all_desktop_file_ulrs_exists(self) -> None:
         if subprocess.getoutput('which vim') == '/usr/bin/vim':
             vim_count = [
-                x for x in self.desk_locate.all_desktop_file_ulrs
+                x for x in self.desk_locate.ulrs
                 if 'vim.desktop' in x]
             self.assertEqual(len(vim_count), 2)
 
     def test_desktop_file_ulrs_priority(self) -> None:
         if subprocess.getoutput('which vim') == '/usr/bin/vim':
             vim_count = [
-                x for x in self.desk_locate.desktop_file_ulrs_by_priority
+                x for x in self.desk_locate.ulrs_by_priority
                 if 'vim.desktop' in x]
             self.assertEqual(len(vim_count), 1)
 

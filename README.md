@@ -1,5 +1,5 @@
-# desktopentries
-https://github.com/w-a-gomes/desktopentries
+# desktopentryparse
+https://github.com/w-a-gomes/desktopentryparse
 
 Python lib to find and provide easy access to desktop input files values
 
@@ -7,23 +7,22 @@ No dependencies, just use the standard library.
 ### Definition
 Use `help()` for details.
 ```
-DesktopFileLocations():
-    all_desktop_file_ulrs
-    desktop_file_ulrs_by_priority
-    desktop_file_dirs
-```
-```
-DesktopFile(desktop_file_url):        
-    desktop_file_as_dict
-    desktop_file_url
+desktopentryparse.FileLocations()
+    ulrs: list
+    ulrs_by_priority: list
+    file_dirs: list
+
+desktopentryparse.DesktopFile(url: str)
+    as_dict: dict
+    url: str
 ```
 ### Usage:
 Locate desktop file folders, and get the URL addresses of those files
 
 ```python
 
->>> local = DesktopFileLocations()
->>> local.desktop_file_dirs
+>>> local = FileLocations()
+>>> local.file_dirs
 ['/home/user/.local/share/applications',
  '/usr/local/share/applications',
  '/usr/share/applications',
@@ -31,7 +30,7 @@ Locate desktop file folders, and get the URL addresses of those files
  '/var/lib/flatpak/exports/share/applications',
  '/var/lib/snapd/desktop/applications']
 >>>
->>> local.desktop_file_ulrs_by_priority
+>>> local.ulrs_by_priority
 ['/home/user/.local/share/applications/jetbrains-pycharm-ce.desktop',
  '/usr/local/share/applications/vim.desktop',
  '/usr/share/applications/org.inkscape.Inkscape.desktop',
@@ -45,20 +44,21 @@ Locate desktop file folders, and get the URL addresses of those files
 
 ```
 Get the contents of a desktop file
+
 ```python
->>> d = DesktopFile('/usr/share/applications/firefox.desktop')
->>> d.desktop_file_as_dict['[Desktop Entry]']['Name']
+>>> d = DesktopFile(url='/usr/share/applications/firefox.desktop')
+>>> d.as_dict['[Desktop Entry]']['Name']
 'Firefox Web Browser'
->>> d.desktop_file_as_dict['[Desktop Entry]']['Type']
+>>> d.as_dict['[Desktop Entry]']['Type']
 'Application'
->>> for i in d.desktop_file_as_dict.keys():
+>>> for i in d.as_dict.keys():
 ...     print(i)
 ...
 [Desktop Entry]
-[Desktop Action new-window]
-[Desktop Action new-private-window]
+[Desktop Action new - window]
+[Desktop Action new - private - window]
 >>>
->>> d.desktop_file_as_dict['[Desktop Action new-window]']['Name']
+>>> d.as_dict['[Desktop Action new-window]']['Name']
 'Open a New Window'
 >>>
 ```
