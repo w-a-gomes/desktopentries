@@ -7,7 +7,7 @@ Follows the specification from freedesktop.org: www.freedesktop.org/wiki/Specifi
 
 No dependencies, just use the standard library.
 ### Definitions overview
-See the [documentation](#) for details.
+See the [documentation](https://wbin01.github.io/desktopentryparse) for details.
 ```
 desktopentryparse.FileLocations()
     ulrs: list
