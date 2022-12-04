@@ -111,13 +111,21 @@ desktopentryparse.DesktopFile(url: str)
     url: str
 </code></pre>
 <h2 id="filelocations">FileLocations</h2>
+<p>(class)</p>
+<p>Properties:</p>
+<ul>
+<li><a href="#ulrs">ulrs</a>: list</li>
+<li><a href="#ulrs_by_priority">ulrs_by_priority</a>: list</li>
+<li><a href="#file_dirs">file_dirs</a>: list</li>
+</ul>
 <p>Locate system desktop entry file paths.
 Files that contain the '.desktop' extension and are used internally by
 menus to find applications.</p>
 <p>Follows the specification from freedesktop.org: www.freedesktop.org/wiki/Specifications/basedir-spec/</p>
-<pre><code class="language-python">&gt;&gt;&gt; local = FileLocations()
+<pre><code class="language-python">&gt;&gt;&gt; file_locations = FileLocations()
 </code></pre>
 <h3 id="ulrs">ulrs</h3>
+<p>(Property) <code>FileLocations.ulrs -&gt; list</code></p>
 <p>All desktop files ulrs (/path/file.desktop)</p>
 <p>String list of all desktop file URLs. It may contain files with the
 same name in different paths. To get valid single files, use
@@ -132,7 +140,8 @@ same name in different paths. To get valid single files, use
  ]
 </code></pre>
 <h3 id="ulrs_by_priority">ulrs_by_priority</h3>
-<p>Desktop files ulrs (/path/file.desktop)</p>
+<p>(Property) <code>FileLocations.ulrs_by_priority -&gt; list</code></p>
+<p>Desktop files ulrs (/path/file.desktop).</p>
 <p>String list of all desktop file URLs in order of priority.
 If there are files with the same name, then user files in "~/.local/",
 will have priority over system files. Likewise, files in
@@ -151,7 +160,7 @@ will have priority over system files. Likewise, files in
  ]
 </code></pre>
 <h3 id="file_dirs">file_dirs</h3>
-<p>All desktop files path</p>
+<p>(Property) <code>FileLocations.file_dirs -&gt; list</code></p>
 <p>String list of all desktop file paths on the system as per settings
 in $XDG_DATA_HOME and $XDG_DATA_DIRS of the freedesktop.org spec.</p>
 <pre><code class="language-python">&gt;&gt;&gt; local = FileLocations()
@@ -164,12 +173,21 @@ in $XDG_DATA_HOME and $XDG_DATA_DIRS of the freedesktop.org spec.</p>
  '/var/lib/snapd/desktop/applications']
 </code></pre>
 <h2 id="desktopfile">DesktopFile</h2>
+<p>(class)</p>
+<p>Properties:</p>
+<ul>
+<li><a href="#as_dict">as_dict</a>: dict</li>
+<li><a href="#url">url</a>: str</li>
+</ul>
 <p>Desktop files are files with the extension '.desktop' and are used
 internally by menus to find applications. This object converts these files
 into a dictionary to provide easy access to their values.</p>
+<p>Positional parameters:
+<code>url</code>: Need a string of a desktop file like: "/path/file.desktop"</p>
 <pre><code class="language-python">desktop_file = DesktopFile(url='/usr/share/applications/firefox.desktop')
 </code></pre>
 <h3 id="as_dict">as_dict</h3>
+<p>(Property) <code>DesktopFile.as_dict -&gt; dict</code></p>
 <p>Contents of a desktop file as a dictionary.</p>
 <pre><code class="language-python">&gt;&gt;&gt; desktop_file = DesktopFile(url='/usr/share/applications/firefox.desktop')
 &gt;&gt;&gt; desktop_file.as_dict['[Desktop Entry]']['Name']
@@ -187,6 +205,7 @@ into a dictionary to provide easy access to their values.</p>
 'Open a New Window'
 </code></pre>
 <h3 id="url">url</h3>
+<p>(Property) <code>DesktopFile.url -&gt; str</code></p>
 <p>The URL used to construct this object, like: "/path/file.desktop".</p>
 <pre><code class="language-python">&gt;&gt;&gt; desktop_file = DesktopFile(url='/usr/share/applications/firefox.desktop')
 &gt;&gt;&gt; desktop_file.url
