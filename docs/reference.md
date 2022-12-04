@@ -13,16 +13,26 @@ desktopentryparse.DesktopFile(url: str)
 ```
 
 ## FileLocations
+(class)
+
+Properties:
+
+* [ulrs](#ulrs): list
+* [ulrs_by_priority](#ulrs_by_priority): list
+* [file_dirs](#file_dirs): list
+
 Locate system desktop entry file paths.
 Files that contain the '.desktop' extension and are used internally by
 menus to find applications.
 
 Follows the specification from freedesktop.org: www.freedesktop.org/wiki/Specifications/basedir-spec/
 ```python
->>> local = FileLocations()
+>>> file_locations = FileLocations()
 ```
 
 ### ulrs
+(Property) `FileLocations.ulrs -> list`
+
 All desktop files ulrs (/path/file.desktop)
 
 String list of all desktop file URLs. It may contain files with the
@@ -41,7 +51,9 @@ same name in different paths. To get valid single files, use
 ```
 
 ### ulrs_by_priority
-Desktop files ulrs (/path/file.desktop)
+(Property) `FileLocations.ulrs_by_priority -> list`
+
+Desktop files ulrs (/path/file.desktop).
 
 String list of all desktop file URLs in order of priority.
 If there are files with the same name, then user files in "~/.local/",
@@ -64,7 +76,7 @@ will have priority over system files. Likewise, files in
 ```
 
 ### file_dirs
-All desktop files path
+(Property) `FileLocations.file_dirs -> list`
 
 String list of all desktop file paths on the system as per settings
 in $XDG_DATA_HOME and $XDG_DATA_DIRS of the freedesktop.org spec.
@@ -80,15 +92,27 @@ in $XDG_DATA_HOME and $XDG_DATA_DIRS of the freedesktop.org spec.
 ```
 
 ## DesktopFile
+(class)
+
+Properties:
+
+* [as_dict](#as_dict): dict
+* [url](#url): str
+
 Desktop files are files with the extension '.desktop' and are used
 internally by menus to find applications. This object converts these files
 into a dictionary to provide easy access to their values.
+
+Positional parameters:
+`url`: Need a string of a desktop file like: "/path/file.desktop"
 
 ```python
 desktop_file = DesktopFile(url='/usr/share/applications/firefox.desktop')
 ```
 
 ### as_dict
+(Property) `DesktopFile.as_dict -> dict`
+
 Contents of a desktop file as a dictionary.
 ```python
 >>> desktop_file = DesktopFile(url='/usr/share/applications/firefox.desktop')
@@ -108,6 +132,8 @@ Contents of a desktop file as a dictionary.
 ```
 
 ### url
+(Property) `DesktopFile.url -> str`
+
 The URL used to construct this object, like: "/path/file.desktop".
 
 ```python
