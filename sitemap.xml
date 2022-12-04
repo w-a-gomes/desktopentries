@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://github.com/w-a-gomes/desktopentryparse/</loc>
+         <loc>https://wbin01.github.io/desktopentryparse/</loc>
          <lastmod>2022-12-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://github.com/w-a-gomes/desktopentryparse/about/</loc>
+         <loc>https://wbin01.github.io/desktopentryparse/about/</loc>
          <lastmod>2022-12-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://github.com/w-a-gomes/desktopentryparse/reference/</loc>
+         <loc>https://wbin01.github.io/desktopentryparse/reference/</loc>
          <lastmod>2022-12-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://github.com/w-a-gomes/desktopentryparse/tests/</loc>
+         <loc>https://wbin01.github.io/desktopentryparse/tests/</loc>
          <lastmod>2022-12-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
