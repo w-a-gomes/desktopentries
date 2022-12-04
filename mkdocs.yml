@@ -1,5 +1,5 @@
 site_name: desktopentryparse
-site_url: https://github.com/w-a-gomes/desktopentryparse
+site_url: https://wbin01.github.io/desktopentryparse
 nav:
     - Home: index.md
     - Class Reference: reference.md

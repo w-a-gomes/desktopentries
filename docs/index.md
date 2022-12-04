@@ -1,5 +1,5 @@
 # desktopentryparse
-[https://github.com/w-a-gomes/desktopentryparse](https://github.com/w-a-gomes/desktopentryparse)
+[https://wbin01.github.io/desktopentryparse](https://wbin01.github.io/desktopentryparse)
 
 Python lib to find and provide easy access to desktop files values.
 
