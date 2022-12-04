@@ -138,21 +138,21 @@ class DesktopFile(object):
         """Contents of a desktop file as a dictionary
 
         Example:
-        >>> d = DesktopFile(url='/usr/share/applications/firefox.desktop')
-        >>> d.as_dict['[Desktop Entry]']['Name']
+        >>> desktop_file = DesktopFile(
+        ...     url='/usr/share/applications/firefox.desktop')
+        >>> desktop_file.as_dict['[Desktop Entry]']['Name']
         'Firefox Web Browser'
-        >>> d.as_dict['[Desktop Entry]']['Type']
+        >>> desktop_file.as_dict['[Desktop Entry]']['Type']
         'Application'
-        >>> for i in d.as_dict.keys():
-        ...     print(i)
+        >>> for key in desktop_file.as_dict.keys():
+        ...     print(key)
         ...
         [Desktop Entry]
         [Desktop Action new-window]
         [Desktop Action new-private-window]
         >>>
-        >>> d.as_dict['[Desktop Action new-window]']['Name']
+        >>> desktop_file.as_dict['[Desktop Action new-window]']['Name']
         'Open a New Window'
-        >>>
         """
         if not self.__as_dict:
             self.__parse_file_to_dict()

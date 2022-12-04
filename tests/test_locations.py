@@ -6,7 +6,7 @@
 # coverage run -m unittest discover && coverage report -m
 import os
 import unittest
-import src.desktopentries as deskentry
+import src.desktopentryparse as deskentry
 
 
 class TestLocation(unittest.TestCase):

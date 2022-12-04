@@ -1,17 +1,15 @@
-# Welcome to MkDocs
+# desktopentryparse
+[https://github.com/w-a-gomes/desktopentryparse](https://github.com/w-a-gomes/desktopentryparse)
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+Python lib to find and provide easy access to desktop files values.
 
-## Commands
+Follows the specification from freedesktop.org: www.freedesktop.org/wiki/Specifications/basedir-spec/
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+No dependencies, just use the standard library.
 
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+### Sample
+```python
+>>> desktop_file = DesktopFile(url='/usr/share/applications/firefox.desktop')
+>>> desktop_file.as_dict['[Desktop Entry]']['Name']
+'Firefox Web Browser'
+```

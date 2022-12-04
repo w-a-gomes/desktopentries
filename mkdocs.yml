@@ -1,6 +1,8 @@
-site_name: desktopentries
-site_url: https://example.com/
+site_name: desktopentryparse
+site_url: https://github.com/w-a-gomes/desktopentryparse
 nav:
     - Home: index.md
+    - Class Reference: reference.md
+    - Tests: tests.md
     - About: about.md
 theme: readthedocs

@@ -8,7 +8,7 @@ import os
 import unittest
 import subprocess
 
-import src.desktopentries as deskentry
+import src.desktopentryparse as deskentry
 
 
 class TestFilesURL(unittest.TestCase):

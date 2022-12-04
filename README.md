@@ -1,11 +1,13 @@
 # desktopentryparse
 https://github.com/w-a-gomes/desktopentryparse
 
-Python lib to find and provide easy access to desktop input files values
+Python lib to find and provide easy access to desktop files values.
+
+Follows the specification from freedesktop.org: www.freedesktop.org/wiki/Specifications/basedir-spec/
 
 No dependencies, just use the standard library.
-### Definition
-Use `help()` for details.
+### Definitions overview
+See the [documentation](#) for details.
 ```
 desktopentryparse.FileLocations()
     ulrs: list
@@ -16,11 +18,9 @@ desktopentryparse.DesktopFile(url: str)
     as_dict: dict
     url: str
 ```
-### Usage:
 Locate desktop file folders, and get the URL addresses of those files
 
 ```python
-
 >>> local = FileLocations()
 >>> local.file_dirs
 ['/home/user/.local/share/applications',
@@ -41,26 +41,24 @@ Locate desktop file folders, and get the URL addresses of those files
  '/var/lib/snapd/desktop/applications/ohmygiraffe_ohmygiraffe.desktop',
  ...
  ]
-
 ```
 Get the contents of a desktop file
 
 ```python
->>> d = DesktopFile(url='/usr/share/applications/firefox.desktop')
->>> d.as_dict['[Desktop Entry]']['Name']
+>>> desktop_file = DesktopFile(url='/usr/share/applications/firefox.desktop')
+>>> desktop_file.as_dict['[Desktop Entry]']['Name']
 'Firefox Web Browser'
->>> d.as_dict['[Desktop Entry]']['Type']
+>>> desktop_file.as_dict['[Desktop Entry]']['Type']
 'Application'
->>> for i in d.as_dict.keys():
-...     print(i)
+>>> for key in desktop_file.as_dict.keys():
+...     print(key)
 ...
 [Desktop Entry]
-[Desktop Action new - window]
-[Desktop Action new - private - window]
+[Desktop Action new-window]
+[Desktop Action new-private-window]
 >>>
->>> d.as_dict['[Desktop Action new-window]']['Name']
+>>> desktop_file.as_dict['[Desktop Action new-window]']['Name']
 'Open a New Window'
->>>
 ```
 ## Tests
 Download the Git repository and with the terminal enter the 
