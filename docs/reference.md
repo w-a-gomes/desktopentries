@@ -104,6 +104,7 @@ internally by menus to find applications. This object converts these files
 into a dictionary to provide easy access to their values.
 
 Positional parameters:
+
 `url`: Need a string of a desktop file like: "/path/file.desktop"
 
 ```python
