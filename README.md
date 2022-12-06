@@ -2,10 +2,10 @@
 https://github.com/wbin01/desktopentryparse
 
 Python lib to find and provide easy access to desktop files values.
-
 Follows the specification from freedesktop.org: www.freedesktop.org/wiki/Specifications/basedir-spec/
 
 No dependencies, just use the standard library.
+See the [documentation](https://wbin01.github.io/desktopentryparse) for details.
 ```python
 >>> desktop_file = DesktopFile(url='/usr/share/applications/firefox.desktop')
 >>> desktop_file.as_dict['[Desktop Entry]']['Name']
@@ -22,4 +22,3 @@ No dependencies, just use the standard library.
 >>> desktop_file.as_dict['[Desktop Action new-window]']['Name']
 'Open a New Window'
 ```
-See the [documentation](https://wbin01.github.io/desktopentryparse) for details.
