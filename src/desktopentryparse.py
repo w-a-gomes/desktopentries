@@ -195,35 +195,35 @@ class DesktopFile(object):
 
             self.__as_dict[escope_header] = escope_keys_and_values
 
-    def __gt__(self, other) -> bool:
+    def __gt__(self, _object) -> bool:
         if '[Desktop Entry]' in self.as_dict:
-            return self.as_dict['[Desktop Entry]']['Name'] > other
-        return self.url > other
+            return self.as_dict['[Desktop Entry]']['Name'].lower() > _object
+        return self.url > _object
 
-    def __lt__(self, other) -> bool:
+    def __lt__(self, _object) -> bool:
         if '[Desktop Entry]' in self.as_dict:
-            return self.as_dict['[Desktop Entry]']['Name'] < other
-        return self.url < other
+            return self.as_dict['[Desktop Entry]']['Name'].lower() < _object
+        return self.url < _object
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, _object) -> bool:
         if '[Desktop Entry]' in self.as_dict:
-            return self.as_dict['[Desktop Entry]']['Name'] == other
-        return self.url == other
+            return self.as_dict['[Desktop Entry]']['Name'].lower() == _object
+        return self.url == _object
 
-    def __ge__(self, other) -> bool:
+    def __ge__(self, _object) -> bool:
         if '[Desktop Entry]' in self.as_dict:
-            return self.as_dict['[Desktop Entry]']['Name'] >= other
-        return self.url >= other
+            return self.as_dict['[Desktop Entry]']['Name'].lower() >= _object
+        return self.url >= _object
 
-    def __le__(self, other) -> bool:
+    def __le__(self, _object) -> bool:
         if '[Desktop Entry]' in self.as_dict:
-            return self.as_dict['[Desktop Entry]']['Name'] <= other
-        return self.url <= other
+            return self.as_dict['[Desktop Entry]']['Name'].lower() <= _object
+        return self.url <= _object
 
-    def __ne__(self, other) -> bool:
+    def __ne__(self, _object) -> bool:
         if '[Desktop Entry]' in self.as_dict:
-            return self.as_dict['[Desktop Entry]']['Name'] != other
-        return self.url != other
+            return self.as_dict['[Desktop Entry]']['Name'].lower() != _object
+        return self.url != _object
 
     def __str__(self) -> str:
         if '[Desktop Entry]' in self.as_dict:
