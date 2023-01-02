@@ -6,19 +6,21 @@ Follows the specification from freedesktop.org: www.freedesktop.org/wiki/Specifi
 
 No dependencies, just use the standard library.
 See the [documentation](https://wbin01.github.io/desktopentryparse) for details.
+
 ```python
 >>> desktop_file = DesktopFile(url='/usr/share/applications/firefox.desktop')
->>> desktop_file.as_dict['[Desktop Entry]']['Name']
+>>> desktop_file.content['[Desktop Entry]']['Name']
 'Firefox Web Browser'
->>> desktop_file.as_dict['[Desktop Entry]']['Type']
+>>> desktop_file.content['[Desktop Entry]']['Type']
 'Application'
->>> for key in desktop_file.as_dict.keys():
+>>> for key in desktop_file.content.keys():
 ...     print(key)
 ...
+...
 [Desktop Entry]
-[Desktop Action new-window]
-[Desktop Action new-private-window]
+[Desktop Action new - window]
+[Desktop Action new - private - window]
 >>>
->>> desktop_file.as_dict['[Desktop Action new-window]']['Name']
+>>> desktop_file.content['[Desktop Action new-window]']['Name']
 'Open a New Window'
 ```

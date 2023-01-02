@@ -3,9 +3,11 @@
 #   www.freedesktop.org/wiki/Specifications/
 #   www.freedesktop.org/wiki/Specifications/basedir-spec/
 #   www.freedesktop.org/wiki/Specifications/desktop-entry-spec/
+import logging
 import os
 import re
-from subprocess import getoutput
+import subprocess
+# from subprocess import getoutput
 
 
 class FileLocations(object):
@@ -23,7 +25,7 @@ class FileLocations(object):
 
         Initialize class properties.
         """
-        self.__file_dirs = self.__find_dirs()
+        self.__file_dirs = self.__find_file_dirs()
         self.__ulrs_by_priority = None
         self.__ulrs = None
 
@@ -37,7 +39,7 @@ class FileLocations(object):
         return self.__file_dirs
 
     @property
-    def ulrs_by_priority(self) -> list:
+    def files_ulr_by_priority(self) -> list:
         """Desktop files ulrs (/path/file.desktop)
 
         String list of all desktop file URLs in order of priority.
@@ -47,16 +49,16 @@ class FileLocations(object):
         """
         if not self.__ulrs_by_priority:
             self.__ulrs_by_priority = (
-                self.__find_urls_by_priority())
+                self.__find_files_url_by_priority())
         return self.__ulrs_by_priority
 
     @property
-    def ulrs(self) -> list:
+    def files_ulr(self) -> list:
         """All desktop files ulrs (/path/file.desktop)
 
         String list of all desktop file URLs. It may contain files with the
         same name in different paths. To get valid single files, use
-        "ulrs_by_priority" property.
+        "files_ulr_by_priority" property.
         """
         if not self.__ulrs:
             self.__ulrs = (
@@ -64,17 +66,28 @@ class FileLocations(object):
         return self.__ulrs
 
     @staticmethod
-    def __find_dirs() -> list:
-        xdg_data_home = getoutput('echo $XDG_DATA_HOME')
+    def __find_file_dirs() -> list:
+        xdg_data_home_stdout = None
+        try:
+            xdg_data_home_stdout = os.environ['XDG_DATA_HOME']
+        except KeyError as key_error:
+            logging.info(key_error)
+
         xdg_data_home = (
-            os.path.join(xdg_data_home, 'applications') if xdg_data_home else
+            os.path.join(xdg_data_home_stdout, 'applications')
+            if xdg_data_home_stdout else
             os.path.join(os.environ['HOME'], '.local/share/applications'))
 
         desktop_file_dirs = [xdg_data_home]
 
-        xdg_data_dirs = getoutput('echo $XDG_DATA_DIRS')
-        if xdg_data_dirs:
-            for data_dir in xdg_data_dirs.split(':'):
+        xdg_data_dirs_stdout = None
+        try:
+            xdg_data_dirs_stdout = os.environ['XDG_DATA_DIRS']
+        except KeyError as key_error:
+            logging.info(key_error)
+
+        if xdg_data_dirs_stdout:
+            for data_dir in xdg_data_dirs_stdout.split(':'):
                 if 'applications' in os.listdir(data_dir):
                     desktop_file_dirs.append(
                         os.path.join(data_dir, 'applications'))
@@ -84,7 +97,7 @@ class FileLocations(object):
 
         return desktop_file_dirs
 
-    def __find_urls_by_priority(self) -> list:
+    def __find_files_url_by_priority(self) -> list:
         # Get url in order of precedence
 
         checked_file_names = []
@@ -131,32 +144,32 @@ class DesktopFile(object):
             String from a desktop file like: "/path/file.desktop"
         """
         self.__url = os.path.abspath(url)
-        self.__as_dict = None
+        self.__content = None
 
     @property
-    def as_dict(self) -> dict:
+    def content(self) -> dict:
         """Contents of a desktop file as a dictionary
 
         Example:
         >>> desktop_file = DesktopFile(
-        ...     url='/usr/share/applications/firefox.desktop')
-        >>> desktop_file.as_dict['[Desktop Entry]']['Name']
+        ... url='/usr/share/applications/firefox.desktop')
+        >>> desktop_file.content['[Desktop Entry]']['Name']
         'Firefox Web Browser'
-        >>> desktop_file.as_dict['[Desktop Entry]']['Type']
+        >>> desktop_file.content['[Desktop Entry]']['Type']
         'Application'
-        >>> for key in desktop_file.as_dict.keys():
-        ...     print(key)
+        >>> for key in desktop_file.content.keys():
+        ... print(key)
         ...
         [Desktop Entry]
         [Desktop Action new-window]
         [Desktop Action new-private-window]
         >>>
-        >>> desktop_file.as_dict['[Desktop Action new-window]']['Name']
+        >>> desktop_file.content['[Desktop Action new-window]']['Name']
         'Open a New Window'
         """
-        if not self.__as_dict:
+        if not self.__content:
             self.__parse_file_to_dict()
-        return self.__as_dict
+        return self.__content
 
     @property
     def url(self) -> str:
@@ -180,7 +193,7 @@ class DesktopFile(object):
                 re.split('\[[A-Z]', desktop_file_line)[1:])]
 
         # Create dict
-        self.__as_dict = {}
+        self.__content = {}
         for scope in desktop_scope:
             escope_header = ''           # [Desktop Entry]
             escope_keys_and_values = {}  # Key=Value
@@ -193,39 +206,39 @@ class DesktopFile(object):
                         line_key, line_value = scopeline.split('=', 1)
                         escope_keys_and_values[line_key] = line_value
 
-            self.__as_dict[escope_header] = escope_keys_and_values
+            self.__content[escope_header] = escope_keys_and_values
 
     def __gt__(self, _object) -> bool:
-        if '[Desktop Entry]' in self.as_dict:
-            return self.as_dict['[Desktop Entry]']['Name'].lower() > _object
+        if '[Desktop Entry]' in self.content:
+            return self.content['[Desktop Entry]']['Name'].lower() > _object
         return self.url > _object
 
     def __lt__(self, _object) -> bool:
-        if '[Desktop Entry]' in self.as_dict:
-            return self.as_dict['[Desktop Entry]']['Name'].lower() < _object
+        if '[Desktop Entry]' in self.content:
+            return self.content['[Desktop Entry]']['Name'].lower() < _object
         return self.url < _object
 
     def __eq__(self, _object) -> bool:
-        if '[Desktop Entry]' in self.as_dict:
-            return self.as_dict['[Desktop Entry]']['Name'].lower() == _object
+        if '[Desktop Entry]' in self.content:
+            return self.content['[Desktop Entry]']['Name'].lower() == _object
         return self.url == _object
 
     def __ge__(self, _object) -> bool:
-        if '[Desktop Entry]' in self.as_dict:
-            return self.as_dict['[Desktop Entry]']['Name'].lower() >= _object
+        if '[Desktop Entry]' in self.content:
+            return self.content['[Desktop Entry]']['Name'].lower() >= _object
         return self.url >= _object
 
     def __le__(self, _object) -> bool:
-        if '[Desktop Entry]' in self.as_dict:
-            return self.as_dict['[Desktop Entry]']['Name'].lower() <= _object
+        if '[Desktop Entry]' in self.content:
+            return self.content['[Desktop Entry]']['Name'].lower() <= _object
         return self.url <= _object
 
     def __ne__(self, _object) -> bool:
-        if '[Desktop Entry]' in self.as_dict:
-            return self.as_dict['[Desktop Entry]']['Name'].lower() != _object
+        if '[Desktop Entry]' in self.content:
+            return self.content['[Desktop Entry]']['Name'].lower() != _object
         return self.url != _object
 
     def __str__(self) -> str:
-        if '[Desktop Entry]' in self.as_dict:
-            return f'<DesktopFile: {self.as_dict["[Desktop Entry]"]["Name"]}>'
+        if '[Desktop Entry]' in self.content:
+            return f'<DesktopFile: {self.content["[Desktop Entry]"]["Name"]}>'
         return f'<DesktopFile: {self.url.split("/")[-1]}>'

@@ -17,8 +17,8 @@ desktopentryparse.DesktopFile(url: str)
 
 Properties:
 
-* [ulrs](#ulrs): list
-* [ulrs_by_priority](#ulrs_by_priority): list
+* [files_ulr](#files_ulr): list
+* [files_ulr_by_priority](#files_ulr_by_priority): list
 * [file_dirs](#file_dirs): list
 
 Locate system desktop entry file paths.
@@ -30,18 +30,18 @@ Follows the specification from freedesktop.org: www.freedesktop.org/wiki/Specifi
 >>> file_locations = FileLocations()
 ```
 
-### ulrs
-(Property) `FileLocations.ulrs -> list`
+### files_ulr
+(Property) `FileLocations.files_ulr -> list`
 
 All desktop files ulrs (/path/file.desktop)
 
 String list of all desktop file URLs. It may contain files with the
 same name in different paths. To get valid single files, use
-"ulrs_by_priority" property.
+"files_ulr_by_priority" property.
 
 ```python
 >>> local = desktopentryparse.FileLocations()
->>> local.ulrs
+>>> local.files_ulr
 ['/home/user/.local/share/applications/jetbrains-pycharm-ce.desktop',
  '/usr/local/share/applications/vim.desktop',
  '/usr/share/applications/org.inkscape.Inkscape.desktop',
@@ -50,8 +50,8 @@ same name in different paths. To get valid single files, use
  ]
 ```
 
-### ulrs_by_priority
-(Property) `FileLocations.ulrs_by_priority -> list`
+### files_ulr_by_priority
+(Property) `FileLocations.files_ulr_by_priority -> list`
 
 Desktop files ulrs (/path/file.desktop).
 
@@ -62,7 +62,7 @@ will have priority over system files. Likewise, files in
 
 ```python
 >>> local = FileLocations()
->>> local.ulrs_by_priority
+>>> local.files_ulr_by_priority
 ['/home/user/.local/share/applications/jetbrains-pycharm-ce.desktop',
  '/usr/local/share/applications/vim.desktop',
  '/usr/share/applications/org.inkscape.Inkscape.desktop',
@@ -96,7 +96,7 @@ in $XDG_DATA_HOME and $XDG_DATA_DIRS of the freedesktop.org spec.
 
 Properties:
 
-* [as_dict](#as_dict): dict
+* [content](#content): dict
 * [url](#url): str
 
 Desktop files are files with the extension '.desktop' and are used
@@ -111,24 +111,25 @@ Positional parameters:
 desktop_file = DesktopFile(url='/usr/share/applications/firefox.desktop')
 ```
 
-### as_dict
-(Property) `DesktopFile.as_dict -> dict`
+### content
+(Property) `DesktopFile.content -> dict`
 
 Contents of a desktop file as a dictionary.
+
 ```python
 >>> desktop_file = DesktopFile(url='/usr/share/applications/firefox.desktop')
->>> desktop_file.as_dict['[Desktop Entry]']['Name']
+>>> desktop_file.content['[Desktop Entry]']['Name']
 'Firefox Web Browser'
->>> desktop_file.as_dict['[Desktop Entry]']['Type']
+>>> desktop_file.content['[Desktop Entry]']['Type']
 'Application'
->>> for key in desktop_file.as_dict.keys():
+>>> for key in desktop_file.content.keys():
 ...     print(key)
 ...
 [Desktop Entry]
-[Desktop Action new-window]
-[Desktop Action new-private-window]
+[Desktop Action new - window]
+[Desktop Action new - private - window]
 >>>
->>> desktop_file.as_dict['[Desktop Action new-window]']['Name']
+>>> desktop_file.content['[Desktop Action new-window]']['Name']
 'Open a New Window'
 ```
 
