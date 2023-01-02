@@ -87,7 +87,7 @@
 <p>Follows the specification from freedesktop.org: www.freedesktop.org/wiki/Specifications/basedir-spec/</p>
 <p>No dependencies, just use the standard library.</p>
 <pre><code class="language-python">&gt;&gt;&gt; desktop_file = DesktopFile(url='/usr/share/applications/firefox.desktop')
-&gt;&gt;&gt; desktop_file.as_dict['[Desktop Entry]']['Name']
+&gt;&gt;&gt; desktop_file.content['[Desktop Entry]']['Name']
 'Firefox Web Browser'
 </code></pre>
               
@@ -137,5 +137,5 @@
 
 <!--
 MkDocs version : 1.4.2
-Build Date UTC : 2022-12-05 06:06:29.566528+00:00
+Build Date UTC : 2023-01-02 22:22:27.304944+00:00
 -->

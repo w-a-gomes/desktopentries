@@ -49,9 +49,9 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#filelocations">FileLocations</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#ulrs">ulrs</a>
+    <li class="toctree-l3"><a class="reference internal" href="#files_ulr">files_ulr</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#ulrs_by_priority">ulrs_by_priority</a>
+    <li class="toctree-l3"><a class="reference internal" href="#files_ulr_by_priority">files_ulr_by_priority</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#file_dirs">file_dirs</a>
     </li>
@@ -59,7 +59,7 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#desktopfile">DesktopFile</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#as_dict">as_dict</a>
+    <li class="toctree-l3"><a class="reference internal" href="#content">content</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#url">url</a>
     </li>
@@ -114,8 +114,8 @@ desktopentryparse.DesktopFile(url: str)
 <p>(class)</p>
 <p>Properties:</p>
 <ul>
-<li><a href="#ulrs">ulrs</a>: list</li>
-<li><a href="#ulrs_by_priority">ulrs_by_priority</a>: list</li>
+<li><a href="#files_ulr">files_ulr</a>: list</li>
+<li><a href="#files_ulr_by_priority">files_ulr_by_priority</a>: list</li>
 <li><a href="#file_dirs">file_dirs</a>: list</li>
 </ul>
 <p>Locate system desktop entry file paths.
@@ -124,14 +124,14 @@ menus to find applications.</p>
 <p>Follows the specification from freedesktop.org: www.freedesktop.org/wiki/Specifications/basedir-spec/</p>
 <pre><code class="language-python">&gt;&gt;&gt; file_locations = FileLocations()
 </code></pre>
-<h3 id="ulrs">ulrs</h3>
-<p>(Property) <code>FileLocations.ulrs -&gt; list</code></p>
+<h3 id="files_ulr">files_ulr</h3>
+<p>(Property) <code>FileLocations.files_ulr -&gt; list</code></p>
 <p>All desktop files ulrs (/path/file.desktop)</p>
 <p>String list of all desktop file URLs. It may contain files with the
 same name in different paths. To get valid single files, use
-"ulrs_by_priority" property.</p>
+"files_ulr_by_priority" property.</p>
 <pre><code class="language-python">&gt;&gt;&gt; local = desktopentryparse.FileLocations()
-&gt;&gt;&gt; local.ulrs
+&gt;&gt;&gt; local.files_ulr
 ['/home/user/.local/share/applications/jetbrains-pycharm-ce.desktop',
  '/usr/local/share/applications/vim.desktop',
  '/usr/share/applications/org.inkscape.Inkscape.desktop',
@@ -139,15 +139,15 @@ same name in different paths. To get valid single files, use
  ...
  ]
 </code></pre>
-<h3 id="ulrs_by_priority">ulrs_by_priority</h3>
-<p>(Property) <code>FileLocations.ulrs_by_priority -&gt; list</code></p>
+<h3 id="files_ulr_by_priority">files_ulr_by_priority</h3>
+<p>(Property) <code>FileLocations.files_ulr_by_priority -&gt; list</code></p>
 <p>Desktop files ulrs (/path/file.desktop).</p>
 <p>String list of all desktop file URLs in order of priority.
 If there are files with the same name, then user files in "~/.local/",
 will have priority over system files. Likewise, files in
 "/usr/local/share" take precedence over files in "/usr/share".</p>
 <pre><code class="language-python">&gt;&gt;&gt; local = FileLocations()
-&gt;&gt;&gt; local.ulrs_by_priority
+&gt;&gt;&gt; local.files_ulr_by_priority
 ['/home/user/.local/share/applications/jetbrains-pycharm-ce.desktop',
  '/usr/local/share/applications/vim.desktop',
  '/usr/share/applications/org.inkscape.Inkscape.desktop',
@@ -176,7 +176,7 @@ in $XDG_DATA_HOME and $XDG_DATA_DIRS of the freedesktop.org spec.</p>
 <p>(class)</p>
 <p>Properties:</p>
 <ul>
-<li><a href="#as_dict">as_dict</a>: dict</li>
+<li><a href="#content">content</a>: dict</li>
 <li><a href="#url">url</a>: str</li>
 </ul>
 <p>Desktop files are files with the extension '.desktop' and are used
@@ -186,22 +186,22 @@ into a dictionary to provide easy access to their values.</p>
 <p><code>url</code>: Need a string of a desktop file like: "/path/file.desktop"</p>
 <pre><code class="language-python">desktop_file = DesktopFile(url='/usr/share/applications/firefox.desktop')
 </code></pre>
-<h3 id="as_dict">as_dict</h3>
-<p>(Property) <code>DesktopFile.as_dict -&gt; dict</code></p>
+<h3 id="content">content</h3>
+<p>(Property) <code>DesktopFile.content -&gt; dict</code></p>
 <p>Contents of a desktop file as a dictionary.</p>
 <pre><code class="language-python">&gt;&gt;&gt; desktop_file = DesktopFile(url='/usr/share/applications/firefox.desktop')
-&gt;&gt;&gt; desktop_file.as_dict['[Desktop Entry]']['Name']
+&gt;&gt;&gt; desktop_file.content['[Desktop Entry]']['Name']
 'Firefox Web Browser'
-&gt;&gt;&gt; desktop_file.as_dict['[Desktop Entry]']['Type']
+&gt;&gt;&gt; desktop_file.content['[Desktop Entry]']['Type']
 'Application'
-&gt;&gt;&gt; for key in desktop_file.as_dict.keys():
+&gt;&gt;&gt; for key in desktop_file.content.keys():
 ...     print(key)
 ...
 [Desktop Entry]
-[Desktop Action new-window]
-[Desktop Action new-private-window]
+[Desktop Action new - window]
+[Desktop Action new - private - window]
 &gt;&gt;&gt;
-&gt;&gt;&gt; desktop_file.as_dict['[Desktop Action new-window]']['Name']
+&gt;&gt;&gt; desktop_file.content['[Desktop Action new-window]']['Name']
 'Open a New Window'
 </code></pre>
 <h3 id="url">url</h3>
