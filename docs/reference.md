@@ -3,12 +3,12 @@
 Definitions overview
 ```
 desktopentryparse.FileLocations()
-    ulrs: list
-    ulrs_by_priority: list
+    files_ulr: list
+    files_ulr_by_priority: list
     file_dirs: list
 
 desktopentryparse.DesktopFile(url: str)
-    as_dict: dict
+    content: dict
     url: str
 ```
 
