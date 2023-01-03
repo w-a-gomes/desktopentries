@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Blender
+GenericName=3D modeler
+Exec=blender
+Icon=blender
+Terminal=false
+Type=Application
+Categories=Graphics;3DGraphics;

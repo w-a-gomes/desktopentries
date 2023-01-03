@@ -134,6 +134,7 @@ class DesktopFile(object):
         """
         self.__url = os.path.abspath(url)
         self.__content = None
+        self.__url_basename = os.path.basename(self.__url).rstrip('.desktop')
 
     @property
     def content(self) -> dict:
@@ -200,34 +201,34 @@ class DesktopFile(object):
     def __gt__(self, _object) -> bool:
         if '[Desktop Entry]' in self.content:
             return self.content['[Desktop Entry]']['Name'].lower() > _object
-        return self.url > _object
+        return self.__url_basename > _object
 
     def __lt__(self, _object) -> bool:
         if '[Desktop Entry]' in self.content:
             return self.content['[Desktop Entry]']['Name'].lower() < _object
-        return self.url < _object
+        return self.__url_basename < _object
 
     def __eq__(self, _object) -> bool:
         if '[Desktop Entry]' in self.content:
             return self.content['[Desktop Entry]']['Name'].lower() == _object
-        return self.url == _object
+        return self.__url_basename == _object
 
     def __ge__(self, _object) -> bool:
         if '[Desktop Entry]' in self.content:
             return self.content['[Desktop Entry]']['Name'].lower() >= _object
-        return self.url >= _object
+        return self.__url_basename >= _object
 
     def __le__(self, _object) -> bool:
         if '[Desktop Entry]' in self.content:
             return self.content['[Desktop Entry]']['Name'].lower() <= _object
-        return self.url <= _object
+        return self.__url_basename <= _object
 
     def __ne__(self, _object) -> bool:
         if '[Desktop Entry]' in self.content:
             return self.content['[Desktop Entry]']['Name'].lower() != _object
-        return self.url != _object
+        return self.__url_basename != _object
 
     def __str__(self) -> str:
         if '[Desktop Entry]' in self.content:
             return f'<DesktopFile: {self.content["[Desktop Entry]"]["Name"]}>'
-        return f'<DesktopFile: {self.url.split("/")[-1]}>'
+        return f'<DesktopFile: {self.__url_basename}>'

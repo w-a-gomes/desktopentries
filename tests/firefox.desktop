@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Firefox Web Browser
+GenericName=Web Browser
+Exec=firefox
+Terminal=false
+Type=Application
+Icon=firefox
+Categories=GNOME;GTK;Network;WebBrowser;
+StartupNotify=true

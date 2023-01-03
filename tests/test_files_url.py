@@ -14,7 +14,17 @@ import src.desktopentryparse as deskentry
 class TestFilesURL(unittest.TestCase):
 
     def setUp(self) -> None:
+        self.xdg_data_home_initial_value = True
+        if not os.environ.get('XDG_DATA_HOME'):
+            self.xdg_data_home_initial_value = False
+            os.environ['XDG_DATA_HOME'] = os.path.join(
+                os.environ['HOME'], '.local', 'share')
+
         self.desk_locate = deskentry.FileLocations()
+
+    def tearDown(self) -> None:
+        if not self.xdg_data_home_initial_value:
+            os.environ.pop('XDG_DATA_HOME', None)
 
     def test_if_files_is_not_none(self) -> None:
         self.assertIsNotNone(self.desk_locate.files_ulr_by_priority)
