@@ -20,41 +20,41 @@ class TestFilesURL(unittest.TestCase):
             os.environ['XDG_DATA_HOME'] = os.path.join(
                 os.environ['HOME'], '.local', 'share')
 
-        self.desk_locate = deskentry.FileLocations()
+        self.desk_locate = deskentry.DesktopFileLocates()
 
     def tearDown(self) -> None:
         if not self.xdg_data_home_initial_value:
             os.environ.pop('XDG_DATA_HOME', None)
 
     def test_if_files_is_not_none(self) -> None:
-        self.assertIsNotNone(self.desk_locate.files_ulr_by_priority)
-        self.assertIsNotNone(self.desk_locate.files_ulr)
+        self.assertIsNotNone(self.desk_locate.ulrs_by_priority)
+        self.assertIsNotNone(self.desk_locate.ulrs)
 
     def test_if_all_file_exists(self) -> None:
-        for i in self.desk_locate.files_ulr_by_priority:
+        for i in self.desk_locate.ulrs_by_priority:
             self.assertTrue(os.path.isfile(i))
 
-        for i in self.desk_locate.files_ulr:
+        for i in self.desk_locate.ulrs:
             self.assertTrue(os.path.isfile(i))
 
     def test_all_file_extensions(self) -> None:
-        for i in self.desk_locate.files_ulr_by_priority:
+        for i in self.desk_locate.ulrs_by_priority:
             self.assertTrue(i.endswith('.desktop'))
 
-        for i in self.desk_locate.files_ulr:
+        for i in self.desk_locate.ulrs:
             self.assertTrue(i.endswith('.desktop'))
 
     def test_if_all_desktop_file_ulrs_exists(self) -> None:
         if subprocess.getoutput('which vim') == '/usr/bin/vim':
             vim_count = [
-                x for x in self.desk_locate.files_ulr
+                x for x in self.desk_locate.ulrs
                 if 'vim.desktop' in x]
             self.assertEqual(len(vim_count), 2)
 
     def test_desktop_file_ulrs_priority(self) -> None:
         if subprocess.getoutput('which vim') == '/usr/bin/vim':
             vim_count = [
-                x for x in self.desk_locate.files_ulr_by_priority
+                x for x in self.desk_locate.ulrs_by_priority
                 if 'vim.desktop' in x]
             self.assertEqual(len(vim_count), 1)
 

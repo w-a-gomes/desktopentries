@@ -18,10 +18,10 @@ class TestDesktopFile(unittest.TestCase):
             os.environ['XDG_DATA_HOME'] = os.path.join(
                 os.environ['HOME'], '.local', 'share')
 
-        self.desk_locate = deskentry.FileLocations()
+        self.desk_locate = deskentry.DesktopFileLocates()
         self.all_desktop_file = [
             deskentry.DesktopFile(x) for x in
-            self.desk_locate.files_ulr_by_priority]
+            self.desk_locate.ulrs_by_priority]
 
     def tearDown(self) -> None:
         if not self.xdg_data_home_initial_value:
@@ -29,7 +29,7 @@ class TestDesktopFile(unittest.TestCase):
 
     def test_if_files_is_not_none(self) -> None:
         deskfile = deskentry.DesktopFile(
-            self.desk_locate.files_ulr_by_priority[0])
+            self.desk_locate.ulrs_by_priority[0])
         self.assertIsNotNone(deskfile.url)
         self.assertIsNotNone(deskfile.content)
 

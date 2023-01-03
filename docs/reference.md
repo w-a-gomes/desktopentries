@@ -2,24 +2,24 @@
 
 Definitions overview
 ```
-desktopentryparse.FileLocations()
-    files_ulr: list
-    files_ulr_by_priority: list
-    file_dirs: list
+desktopentryparse.DesktopFileLocates()
+    paths: list
+    ulrs: list
+    ulrs_by_priority: list
 
 desktopentryparse.DesktopFile(url: str)
     content: dict
     url: str
 ```
 
-## FileLocations
+## DesktopFileLocates
 (class)
 
 Properties:
 
-* [files_ulr](#files_ulr): list
-* [files_ulr_by_priority](#files_ulr_by_priority): list
-* [file_dirs](#file_dirs): list
+* [paths](#paths): list
+* [urls](#urls): list
+* [ulrs_by_priority](#ulrs_by_priority): list
 
 Locate system desktop entry file paths.
 Files that contain the '.desktop' extension and are used internally by
@@ -27,21 +27,38 @@ menus to find applications.
 
 Follows the specification from freedesktop.org: www.freedesktop.org/wiki/Specifications/basedir-spec/
 ```python
->>> file_locations = FileLocations()
+>>> file_locations = DesktopFileLocates()
 ```
 
-### files_ulr
-(Property) `FileLocations.files_ulr -> list`
+### paths
+(Property) `DesktopFileLocates.paths -> list`
 
-All desktop files ulrs (/path/file.desktop)
-
-String list of all desktop file URLs. It may contain files with the
-same name in different paths. To get valid single files, use
-"files_ulr_by_priority" property.
+String list of all desktop file paths on the system as per settings
+in $XDG_DATA_HOME and $XDG_DATA_DIRS of the freedesktop.org spec.
 
 ```python
->>> local = desktopentryparse.FileLocations()
->>> local.files_ulr
+>>> local = DesktopFileLocates()
+>>> local.paths
+['/home/user/.local/share/applications',
+ '/usr/local/share/applications',
+ '/usr/share/applications',
+ '/home/user/.local/share/flatpak/exports/share/applications',
+ '/var/lib/flatpak/exports/share/applications',
+ '/var/lib/snapd/desktop/applications']
+```
+
+### urls
+(Property) `DesktopFileLocates.urls -> list`
+
+String list of all desktop file URLs.
+
+It may contain files with the
+same name in different paths. To get valid single files, use
+"ulrs_by_priority" property.
+
+```python
+>>> local = desktopentryparse.DesktopFileLocates()
+>>> local.ulrs
 ['/home/user/.local/share/applications/jetbrains-pycharm-ce.desktop',
  '/usr/local/share/applications/vim.desktop',
  '/usr/share/applications/org.inkscape.Inkscape.desktop',
@@ -50,19 +67,18 @@ same name in different paths. To get valid single files, use
  ]
 ```
 
-### files_ulr_by_priority
-(Property) `FileLocations.files_ulr_by_priority -> list`
-
-Desktop files ulrs (/path/file.desktop).
+### ulrs_by_priority
+(Property) `DesktopFileLocates.ulrs_by_priority -> list`
 
 String list of all desktop file URLs in order of priority.
+
 If there are files with the same name, then user files in "~/.local/",
 will have priority over system files. Likewise, files in
 "/usr/local/share" take precedence over files in "/usr/share".
 
 ```python
->>> local = FileLocations()
->>> local.files_ulr_by_priority
+>>> local = DesktopFileLocates()
+>>> local.ulrs_by_priority
 ['/home/user/.local/share/applications/jetbrains-pycharm-ce.desktop',
  '/usr/local/share/applications/vim.desktop',
  '/usr/share/applications/org.inkscape.Inkscape.desktop',
@@ -73,22 +89,6 @@ will have priority over system files. Likewise, files in
  '/var/lib/snapd/desktop/applications/ohmygiraffe_ohmygiraffe.desktop',
  ...
  ]
-```
-
-### file_dirs
-(Property) `FileLocations.file_dirs -> list`
-
-String list of all desktop file paths on the system as per settings
-in $XDG_DATA_HOME and $XDG_DATA_DIRS of the freedesktop.org spec.
-```python
->>> local = FileLocations()
->>> local.file_dirs
-['/home/user/.local/share/applications',
- '/usr/local/share/applications',
- '/usr/share/applications',
- '/home/user/.local/share/flatpak/exports/share/applications',
- '/var/lib/flatpak/exports/share/applications',
- '/var/lib/snapd/desktop/applications']
 ```
 
 ## DesktopFile

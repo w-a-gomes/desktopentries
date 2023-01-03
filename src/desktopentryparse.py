@@ -10,7 +10,7 @@ import subprocess
 # from subprocess import getoutput
 
 
-class FileLocations(object):
+class DesktopFileLocates(object):
     """Desktop files location object.
 
     Locate system desktop entry file paths.
@@ -25,21 +25,21 @@ class FileLocations(object):
 
         Initialize class properties.
         """
-        self.__file_dirs = self.__find_file_dirs()
+        self.__paths = self.__find_paths()
         self.__ulrs_by_priority = None
         self.__ulrs = None
 
     @property
-    def file_dirs(self) -> list:
-        """All desktop files path
+    def paths(self) -> list:
+        """All desktop file paths
 
         String list of all desktop file paths on the system as per settings
         in $XDG_DATA_HOME and $XDG_DATA_DIRS of the freedesktop.org spec.
         """
-        return self.__file_dirs
+        return self.__paths
 
     @property
-    def files_ulr_by_priority(self) -> list:
+    def ulrs_by_priority(self) -> list:
         """Desktop files ulrs (/path/file.desktop)
 
         String list of all desktop file URLs in order of priority.
@@ -49,11 +49,11 @@ class FileLocations(object):
         """
         if not self.__ulrs_by_priority:
             self.__ulrs_by_priority = (
-                self.__find_files_url_by_priority())
+                self.__find_urls_by_priority())
         return self.__ulrs_by_priority
 
     @property
-    def files_ulr(self) -> list:
+    def ulrs(self) -> list:
         """All desktop files ulrs (/path/file.desktop)
 
         String list of all desktop file URLs. It may contain files with the
@@ -66,7 +66,7 @@ class FileLocations(object):
         return self.__ulrs
 
     @staticmethod
-    def __find_file_dirs() -> list:
+    def __find_paths() -> list:
         desktop_file_dirs = [
             os.path.join(
                 os.environ.get(
@@ -86,12 +86,12 @@ class FileLocations(object):
 
         return desktop_file_dirs
 
-    def __find_files_url_by_priority(self) -> list:
+    def __find_urls_by_priority(self) -> list:
         # Get url in order of precedence
 
         checked_file_names = []
         desktop_files = []
-        for desktop_dir in self.__file_dirs:
+        for desktop_dir in self.__paths:
             for desktop_file in os.listdir(desktop_dir):
 
                 if desktop_file not in checked_file_names:
@@ -107,7 +107,7 @@ class FileLocations(object):
     def __find_urls(self) -> list:
         # Get all url
         desktop_files = []
-        for desktop_dir in self.__file_dirs:
+        for desktop_dir in self.__paths:
             for desktop_file in os.listdir(desktop_dir):
                 if ('~' not in desktop_file
                         and desktop_file.endswith('.desktop')):
