@@ -67,25 +67,14 @@ class FileLocations(object):
 
     @staticmethod
     def __find_file_dirs() -> list:
-        xdg_data_home_stdout = None
-        try:
-            xdg_data_home_stdout = os.environ['XDG_DATA_HOME']
-        except KeyError as key_error:
-            logging.info(key_error)
+        desktop_file_dirs = [
+            os.path.join(
+                os.environ.get(
+                    'XDG_DATA_HOME',
+                    os.path.join(os.environ['HOME'], '.local', 'share')),
+                'applications')]
 
-        xdg_data_home = (
-            os.path.join(xdg_data_home_stdout, 'applications')
-            if xdg_data_home_stdout else
-            os.path.join(os.environ['HOME'], '.local/share/applications'))
-
-        desktop_file_dirs = [xdg_data_home]
-
-        xdg_data_dirs_stdout = None
-        try:
-            xdg_data_dirs_stdout = os.environ['XDG_DATA_DIRS']
-        except KeyError as key_error:
-            logging.info(key_error)
-
+        xdg_data_dirs_stdout = os.environ.get('XDG_DATA_DIRS')
         if xdg_data_dirs_stdout:
             for data_dir in xdg_data_dirs_stdout.split(':'):
                 if 'applications' in os.listdir(data_dir):
