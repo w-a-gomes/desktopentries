@@ -179,8 +179,10 @@ class DesktopFile(object):
         # Separate scope: "[header]key=value...", "[h]k=v...",
         desktop_scope = [
             x + y for x, y in zip(
-                re.findall('\[[A-Z]', desktop_file_line),
-                re.split('\[[A-Z]', desktop_file_line)[1:])]
+                re.findall(r'\[\S', desktop_file_line),
+                re.split(r'\[\S', desktop_file_line)[1:])]
+                # re.findall('\[[A-Z]', desktop_file_line),
+                # re.split('\[[A-Z]', desktop_file_line)[1:])]
 
         # Create dict
         self.__content = {}
